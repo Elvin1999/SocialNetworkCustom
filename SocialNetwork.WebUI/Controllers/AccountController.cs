@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.WebUI.Entities;
+using SocialNetwork.WebUI.Helpers;
 using SocialNetwork.WebUI.Models;
 
 namespace SocialNetwork.WebUI.Controllers
@@ -10,14 +11,16 @@ namespace SocialNetwork.WebUI.Controllers
         private UserManager<CustomIdentityUser> _userManager;
         private RoleManager<CustomIdentityRole> _roleManager;
         private SignInManager<CustomIdentityUser> _signInManager;
-
+        private IWebHostEnvironment _webhost;
         public AccountController(UserManager<CustomIdentityUser> userManager,
             RoleManager<CustomIdentityRole> roleManager,
-            SignInManager<CustomIdentityUser> signInManager)
+            SignInManager<CustomIdentityUser> signInManager, IWebHostEnvironment webhost)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
+                               
+            _webhost = webhost;
         }
 
         public IActionResult Register()
@@ -38,7 +41,7 @@ namespace SocialNetwork.WebUI.Controllers
                     loginViewModel.Password, loginViewModel.RememberMe, false).Result;
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Admin");
+                    return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "Invalid Login");
             }
@@ -46,14 +49,17 @@ namespace SocialNetwork.WebUI.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Register(RegisterViewModel registerViewModel)
+        public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
             if (ModelState.IsValid)
             {
+                var helper = new ImageHelper(_webhost);
+                registerViewModel.ImageUrl = await helper.SaveFile(registerViewModel.File);
                 CustomIdentityUser user = new CustomIdentityUser
                 {
                     UserName = registerViewModel.Username,
-                    Email = registerViewModel.Email
+                    Email = registerViewModel.Email   ,
+                     ImageUrl = registerViewModel.ImageUrl
                 };
 
                 IdentityResult result = _userManager.CreateAsync(user, registerViewModel.Password).Result;
@@ -72,7 +78,9 @@ namespace SocialNetwork.WebUI.Controllers
                             ModelState.AddModelError("", "We can not add the role");
                             return View(registerViewModel);
                         }
+
                     }
+                    
                     _userManager.AddToRoleAsync(user, "Admin").Wait();
                     return RedirectToAction("Login");
                 }

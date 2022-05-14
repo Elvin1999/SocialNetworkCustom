@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SocialNetwork.WebUI.DataAccess;
 
 namespace SocialNetwork.WebUI.Entities
 {
@@ -10,5 +11,7 @@ namespace SocialNetwork.WebUI.Entities
         {
 
         }
+
+    
     }
 }
