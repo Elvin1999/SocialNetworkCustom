@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using SocialNetwork.WebUI.DataAccess;
 using SocialNetwork.WebUI.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +12,7 @@ builder.Services.AddDbContext<CustomeIdentityDbContext>(
 builder.Services.AddIdentity<CustomIdentityUser, CustomIdentityRole>()
     .AddEntityFrameworkStores<CustomeIdentityDbContext>()
     .AddDefaultTokenProviders();
-builder.Services.AddScoped<IUserDal, UserDal>();
+
 
 var app = builder.Build();
 

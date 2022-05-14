@@ -20,7 +20,7 @@ namespace SocialNetwork.WebUI.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var users = _userManager.Users.Where(u => u.Id != user.Id).ToList();
+            var users = _userManager.Users.ToList();
             return View(users);
         }
     }
