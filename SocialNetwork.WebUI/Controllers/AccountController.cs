@@ -43,7 +43,7 @@ namespace SocialNetwork.WebUI.Controllers
                     loginViewModel.Password, loginViewModel.RememberMe, false).Result;
                 if (result.Succeeded)
                 {
-                    var user = await _userManager.GetUserAsync(User);
+                    var user = await _userManager.GetUserAsync(_contextAccessor.HttpContext.User);
                     UserHelper.CurrentUser = user;
                     return RedirectToAction("Index", "Home");
                 }

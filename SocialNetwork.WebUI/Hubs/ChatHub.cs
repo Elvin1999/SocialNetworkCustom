@@ -10,17 +10,17 @@ namespace SocialNetwork.WebUI.Hubs
         private UserManager<CustomIdentityUser> userManager;
         private IHttpContextAccessor httpContextAccessor;
 
-        public ChatHub(UserManager<CustomIdentityUser> userManager)
+        public ChatHub(UserManager<CustomIdentityUser> userManager, IHttpContextAccessor httpContextAccessor)
         {
             this.userManager = userManager;
-            
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task SendMessage(string user, string message)
         {
-            var currentUser = UserHelper.CurrentUser;
+            var currentUser = await userManager.GetUserAsync(httpContextAccessor.HttpContext.User);
 
-            await Clients.All.SendAsync("ReceiveMessage", currentUser.UserName, message);
+            await Clients.All.SendAsync("ReceiveMessage", currentUser, message);
         }
 
 
