@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SocialNetwork.WebUI.Entities;
 
@@ -11,9 +12,10 @@ using SocialNetwork.WebUI.Entities;
 namespace SocialNetwork.WebUI.Migrations
 {
     [DbContext(typeof(CustomeIdentityDbContext))]
-    partial class CustomeIdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220519053438_Init2")]
+    partial class Init2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

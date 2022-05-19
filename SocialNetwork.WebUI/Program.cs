@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SocialNetwork.WebUI.Entities;
+using SocialNetwork.WebUI.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddSignalR();
 
 builder.Services.AddDbContext<CustomeIdentityDbContext>(
               options => options.UseSqlServer(@"Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=SocialDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"));
@@ -13,6 +15,8 @@ builder.Services.AddIdentity<CustomIdentityUser, CustomIdentityRole>()
     .AddEntityFrameworkStores<CustomeIdentityDbContext>()
     .AddDefaultTokenProviders();
 
+
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -29,11 +33,14 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute("Default", "{controller=Account}/{action=Login}/{id?}");
+    endpoints.MapHub<ChatHub>("/chathub");
 });
+
 
 app.Run();

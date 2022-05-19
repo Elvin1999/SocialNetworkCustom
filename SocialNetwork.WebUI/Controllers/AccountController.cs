@@ -11,16 +11,18 @@ namespace SocialNetwork.WebUI.Controllers
         private UserManager<CustomIdentityUser> _userManager;
         private RoleManager<CustomIdentityRole> _roleManager;
         private SignInManager<CustomIdentityUser> _signInManager;
+        private IHttpContextAccessor _contextAccessor;
         private IWebHostEnvironment _webhost;
         public AccountController(UserManager<CustomIdentityUser> userManager,
             RoleManager<CustomIdentityRole> roleManager,
-            SignInManager<CustomIdentityUser> signInManager, IWebHostEnvironment webhost)
+            SignInManager<CustomIdentityUser> signInManager, IWebHostEnvironment webhost, IHttpContextAccessor contextAccessor)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _signInManager = signInManager;
-                               
+
             _webhost = webhost;
+            _contextAccessor = contextAccessor;
         }
 
         public IActionResult Register()
@@ -33,7 +35,7 @@ namespace SocialNetwork.WebUI.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Login(LoginViewModel loginViewModel)
+        public async Task<IActionResult> Login(LoginViewModel loginViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -41,6 +43,8 @@ namespace SocialNetwork.WebUI.Controllers
                     loginViewModel.Password, loginViewModel.RememberMe, false).Result;
                 if (result.Succeeded)
                 {
+                    var user = await _userManager.GetUserAsync(User);
+                    UserHelper.CurrentUser = user;
                     return RedirectToAction("Index", "Home");
                 }
                 ModelState.AddModelError("", "Invalid Login");

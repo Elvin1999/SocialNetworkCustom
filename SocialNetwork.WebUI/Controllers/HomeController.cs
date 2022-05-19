@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SocialNetwork.WebUI.DataAccess;
 using SocialNetwork.WebUI.Entities;
 using System.Security.Claims;
 

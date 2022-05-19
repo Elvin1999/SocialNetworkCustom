@@ -1,10 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using SocialNetwork.WebUI.DataAccess;
 
 namespace SocialNetwork.WebUI.Entities
 {
-    public class CustomIdentityUser :IdentityUser, IEntity
+    public class CustomIdentityUser :IdentityUser
     {
+        public CustomIdentityUser()
+        {
+            Messages = new List<Message>();
+        }
+        public virtual ICollection<Message> Messages { get; set; }
         public string ImageUrl { get; set; }     
     }
 }
