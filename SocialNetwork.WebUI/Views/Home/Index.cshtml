@@ -3,7 +3,10 @@
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<div>
+    <h2>@ViewBag.User.UserName</h2>
+    <img src="/images/@ViewBag.User.ImageUrl" style="border-radius:50%;width:50px;height:50px;" />
+</div>
     <div class="container">
         <div class="row">&nbsp;</div>
        
@@ -39,7 +42,7 @@
   <div class="card-body">
     <h5 class="card-title">@user.UserName</h5>
     <p class="card-text">@user.Email</p>
-    <a href="#" class="btn btn-primary">Follow</a>
+    <a href="/home/FindCurrentUser/@user.Id" class="btn btn-primary">Send</a>
   </div>
 </div>
 }

@@ -13,7 +13,7 @@ connection.on("ReceiveMessage", function (currentUser, message) {
     // should be aware of possible script injection concerns.
     console.log(currentUser);
     console.log(currentUser.ImageUrl);
-    let content = `<img src='~/images/${currentUser.imageUrl}'  style='border-radius:50%;width:100px;height:100px'/>`;
+    let content = `<img src='/images/${currentUser.imageUrl}'  style='border-radius:50%;width:100px;height:100px'/>`;
     content+= `${currentUser.userName} says ${message}`
     li.innerHTML = content;
     
