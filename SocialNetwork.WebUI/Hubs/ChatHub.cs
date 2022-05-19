@@ -18,13 +18,12 @@ namespace SocialNetwork.WebUI.Hubs
 
         public async Task SendMessage(string user, string message)
         {
-            var currentUser = await userManager.GetUserAsync(httpContextAccessor.HttpContext.User);
+            var currentUser = UserHelper.CurrentUser;
             var userId = UserHelper.ReceiverUser.Id;
 
            // var receiverUser = userManager.GetUserAsync();
 
-            await Clients.User(userId).SendAsync("ReceiveMessage", UserHelper.ReceiverUser, message);
-            await Clients.User(currentUser.Id).SendAsync("ReceiveMessage", currentUser, message);
+            await Clients.User(userId).SendAsync("ReceiveMessage", UserHelper.CurrentUser, message);
         }
 
 

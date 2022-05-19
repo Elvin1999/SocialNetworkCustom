@@ -18,12 +18,14 @@ namespace SocialNetwork.WebUI.Controllers
         {
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
+
         }
 
         public async Task<IActionResult> Index()
         {
-
+           
             var user = await _userManager.GetUserAsync(HttpContext.User);
+            UserHelper.CurrentUser = user;  
             ViewBag.User = user;
             var users = _userManager.Users.Where(u=>u.Id!=user.Id).ToList();
             return View(users);
