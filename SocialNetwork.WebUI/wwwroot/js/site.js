@@ -1,4 +1,35 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿function GetUsers() {
+    setInterval(function () {
+        //$.ajax({
+        //    type: 'Get',
+        //    url: '/Home/GetUsers',
+        //    success: function (data) {
+        //        console.log(data);
+        //    },
+        //    error: function (err) {
+        //        console.log(err);
+        //    }
+        //});
 
-// Write your JavaScript code.
+        $.ajax({
+            url: "/Home/GetUsers",
+            method: "GET",
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    }, 1000);
+
+    //setInterval(function () {
+    //    var url = "/Home/GetUsers";
+    //    var type = "GET";
+    //    $.ajax({
+    //        type: type,
+    //        url: url,
+
+    //    });
+    //}, 1000);
+}

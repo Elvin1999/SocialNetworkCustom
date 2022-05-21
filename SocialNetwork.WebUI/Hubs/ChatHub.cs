@@ -9,6 +9,7 @@ namespace SocialNetwork.WebUI.Hubs
     {
         private UserManager<CustomIdentityUser> userManager;
         private IHttpContextAccessor httpContextAccessor;
+       
 
         public ChatHub(UserManager<CustomIdentityUser> userManager, IHttpContextAccessor httpContextAccessor)
         {
@@ -20,7 +21,7 @@ namespace SocialNetwork.WebUI.Hubs
         {
             var currentUser = UserHelper.CurrentUser;
             var userId = UserHelper.ReceiverUser.Id;
-
+            
            // var receiverUser = userManager.GetUserAsync();
 
             await Clients.User(userId).SendAsync("ReceiveMessage", UserHelper.CurrentUser, message);
@@ -30,10 +31,22 @@ namespace SocialNetwork.WebUI.Hubs
 
         public override async Task OnConnectedAsync()
         {
-            
-            string info = " connected successfully";
+            var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext.User);
+            UserHelper.ActiveUsers.Add(user);
+            string info = user.UserName+" connected successfully";
             await Clients.Others.SendAsync("Connect", info);
         }
+
+        public override async Task OnDisconnectedAsync(Exception? exception)
+        {
+            var user = await userManager.GetUserAsync(httpContextAccessor.HttpContext.User);
+            UserHelper.ActiveUsers.Remove(user);
+            string info = user.UserName + " disconnected";
+            await Clients.Others.SendAsync("Disconnect", info);
+
+        }
+
+
 
     }
 }

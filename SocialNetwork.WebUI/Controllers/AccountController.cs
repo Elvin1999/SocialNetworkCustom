@@ -95,9 +95,9 @@ namespace SocialNetwork.WebUI.Controllers
         }
 
 
-        public IActionResult LogOff()
+        public async Task<IActionResult> LogOut()
         {
-            _signInManager.SignOutAsync().Wait();
+            await _signInManager.SignOutAsync();
             return RedirectToAction("Login");
         }
     }

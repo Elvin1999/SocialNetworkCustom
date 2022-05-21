@@ -20,12 +20,16 @@ connection.on("ReceiveMessage", function (currentUser, message) {
 });
 
 connection.on("Connect", function (info) {
+
     var li = document.createElement("li");
     document.getElementById("messagesList").appendChild(li);
-    // We can assign user-supplied strings to an element's textContent because it
-    // is not interpreted as markup. If you're assigning in any other way, you 
-    // should be aware of possible script injection concerns.
     li.innerHTML = `<span style='color:green;'>${info}</span>`;
+});
+connection.on("Disconnect", function (info) {
+
+    var li = document.createElement("li");
+    document.getElementById("messagesList").appendChild(li);
+    li.innerHTML = `<span style='color:red;'>${info}</span>`;
 });
 
 
