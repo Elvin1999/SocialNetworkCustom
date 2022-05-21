@@ -9,6 +9,7 @@ namespace SocialNetwork.WebUI.Entities
             Messages = new List<Message>();
         }
         public virtual ICollection<Message> Messages { get; set; }
-        public string ImageUrl { get; set; }     
+        public string ImageUrl { get; set; }
+        public bool IsOnline { get; set; }
     }
 }

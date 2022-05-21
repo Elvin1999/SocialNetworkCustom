@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SocialNetwork.WebUI.Entities;
 using SocialNetwork.WebUI.Helpers;
+using SocialNetwork.WebUI.Models;
 using System.Security.Claims;
 
 namespace SocialNetwork.WebUI.Controllers
@@ -28,7 +29,20 @@ namespace SocialNetwork.WebUI.Controllers
             UserHelper.CurrentUser = user;  
             ViewBag.User = user;
             var users = _userManager.Users.Where(u=>u.Id!=user.Id).ToList();
-            return View(users);
+            foreach (var item in users)
+            {
+                var onlineUser = UserHelper.ActiveUsers.FirstOrDefault(u => u.Id == item.Id);
+                if(onlineUser != null)
+                {
+                    item.IsOnline = true;
+                }
+            }
+            var model = new HomeUserViewModel
+            {
+                AllUsers = users,
+                ActiveUsers = UserHelper.ActiveUsers
+            };
+            return View(model);
         }
 
         public async Task<IActionResult> FindCurrentUser(string id)
@@ -38,5 +52,12 @@ namespace SocialNetwork.WebUI.Controllers
             return RedirectToAction("Index");
            // UserHelper.CurrentUser = _userManager.GetUserAsync();
         }
+
+        public async Task<IActionResult> GetAllActiveUsers()
+        {
+            return Ok(UserHelper.ActiveUsers.DistinctBy(u=>u.Id));
+        }
+
+
     }
 }

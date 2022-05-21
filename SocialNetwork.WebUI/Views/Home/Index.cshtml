@@ -1,4 +1,4 @@
-﻿@model List<SocialNetwork.WebUI.Entities.CustomIdentityUser>
+﻿@model SocialNetwork.WebUI.Models.HomeUserViewModel
 @{
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -42,11 +42,21 @@
 </div>
 
 <div class="row">
-    @foreach (var user in Model)
-    {
-        <div class="card" style="width: 14rem;">
+    <div class="col-md-10">
 
-            <img class="card-img-top" src="~/images/@user.ImageUrl" alt="Card image cap">
+    @foreach (var user in Model.AllUsers)
+    {
+            <div class="card" style="width: 14rem;">
+               
+                   
+              @if(user.IsOnline){
+                <img style="border:5px solid green;" class="card-img-top" src="~/images/@user.ImageUrl" alt="Card image cap">
+
+              }
+              else{
+                <img style="border:5px solid red;" class="card-img-top" src="~/images/@user.ImageUrl" alt="Card image cap">
+
+              }
             <div class="card-body">
                 <h5 class="card-title">@user.UserName</h5>
                 <p class="card-text">@user.Email</p>
@@ -54,6 +64,19 @@
             </div>
         </div>
     }
+    </div>
+     <div id="activeUsers" class="col-md-2">
+      @*    @foreach (var user in Model.ActiveUsers)
+    {
+        <div class="card">
+            <img class="card-img-top" style="width:50px;height:50px" src="~/images/@user.ImageUrl" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">@user.UserName</h5>
+            </div>
+        </div>
+    }*@
+    </div>
 </div>
 <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
 <script src="~/js/chat.js"></script>
+<script src="~/js/site.js"></script>
