@@ -42,9 +42,9 @@
 </div>
 
 <div class="row">
-    <div class="col-md-10">
+    <div id="allUsers" class="col-md-10">
 
-    @foreach (var user in Model.AllUsers)
+   @* @foreach (var user in Model.AllUsers)
     {
             <div class="card" style="width: 14rem;">
                
@@ -63,18 +63,9 @@
                 <a href="/home/FindCurrentUser/@user.Id" class="btn btn-primary">Send</a>
             </div>
         </div>
-    }
+    }*@
     </div>
      <div id="activeUsers" class="col-md-2">
-      @*    @foreach (var user in Model.ActiveUsers)
-    {
-        <div class="card">
-            <img class="card-img-top" style="width:50px;height:50px" src="~/images/@user.ImageUrl" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">@user.UserName</h5>
-            </div>
-        </div>
-    }*@
     </div>
 </div>
 <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>

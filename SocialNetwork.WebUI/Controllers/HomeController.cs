@@ -49,8 +49,17 @@ namespace SocialNetwork.WebUI.Controllers
         {
             UserHelper.ReceiverUser = _userManager.Users.FirstOrDefault(u=>u.Id==id);
 
-            return RedirectToAction("Index");
-           // UserHelper.CurrentUser = _userManager.GetUserAsync();
+            return RedirectToAction("MessageChat");
+        }
+        
+        public IActionResult MessageChat()
+        {
+            var model = new ChatModel
+            {
+                ReceiverUser = UserHelper.ReceiverUser,
+                SenderUser = UserHelper.CurrentUser
+            };
+            return View(model);
         }
 
         public async Task<IActionResult> GetAllActiveUsers()
@@ -58,6 +67,20 @@ namespace SocialNetwork.WebUI.Controllers
             return Ok(UserHelper.ActiveUsers.DistinctBy(u=>u.Id));
         }
 
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var users = _userManager.Users.Where(u => u.Id != user.Id).ToList();
+            foreach (var item in users)
+            {
+                var onlineUser = UserHelper.ActiveUsers.FirstOrDefault(u => u.Id == item.Id);
+                if (onlineUser != null)
+                {
+                    item.IsOnline = true;
+                }
+            }
+            return Ok(users);
+        }
 
     }
 }
